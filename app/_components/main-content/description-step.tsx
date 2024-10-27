@@ -50,11 +50,11 @@ const DescriptionStep = ({ productName, setProductName, productCategory, setProd
                 />
                 <div className="mt-2">
                     <Label htmlFor="text" className="mt-3">Category *</Label>
-                    <Select 
+                    <Select
                         onValueChange={(e) => setProductCategory(e)}
                         value={productCategory}
                     >
-                        <SelectTrigger className={`w-full ${error.category && "border-red-500 focus-visible:border-2 focus-visible:ring-0" } `}>
+                        <SelectTrigger className={`w-full ${error.category && "border-red-500 focus-visible:border-2 focus-visible:ring-0"} `}>
                             <SelectValue placeholder="Select Category" />
                         </SelectTrigger>
                         <SelectContent>
@@ -88,15 +88,19 @@ const DescriptionStep = ({ productName, setProductName, productCategory, setProd
                             <AlertDialogTitle>Put your product image?</AlertDialogTitle>
                             <AlertDialogDescription>
                                 <Label>Paste image link here *</Label>
-                                <Input 
-                                    onChange={(e) => setImage(e.target.value)} 
+                                <Input
+                                    onChange={(e) => setImage(e.target.value)}
                                     value={image}
                                 />
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction>Continue</AlertDialogAction>
+                            <AlertDialogCancel className="text-sky-600 bg-slate-200 hover:bg-slate-300">
+                                Cancel
+                            </AlertDialogCancel>
+                            <AlertDialogAction className="bg-sky-600 hover:bg-sky-700">
+                                Continue
+                            </AlertDialogAction>
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialog>
