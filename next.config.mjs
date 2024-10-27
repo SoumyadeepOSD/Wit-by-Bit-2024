@@ -4,8 +4,12 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'static.nike.com'
-            }
+                hostname: '**', // Allows all hostnames with HTTPS
+            },
+            {
+                protocol: 'http',
+                hostname: '**', // Allows all hostnames with HTTP
+            },
         ]
     }
 };

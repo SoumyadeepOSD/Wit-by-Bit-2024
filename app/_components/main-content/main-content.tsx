@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import DefaultButton from '../buttons/button';
 import Image from 'next/image';
 import {
@@ -15,7 +15,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Input } from "@/components/ui/input";
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { sampleData } from '@/constants/sample-data';
 import AddProduct from './add-product';
@@ -61,6 +61,7 @@ export interface ProductSectionProps {
   categoryName: string;
 }
 
+
 const ProductSection = ({ products, categoryName }: ProductSectionProps) => {
   return (
     <div className="flex flex-col items-start bg-[#D9D9D966] h-[80%] w-[250px] mx-6 my-5 rounded-xl pl-3 pt-3">
@@ -70,17 +71,17 @@ const ProductSection = ({ products, categoryName }: ProductSectionProps) => {
           <Image
             src={item.image}
             alt='product-image'
-            height={60}
+            height={20}
             width={60}
-            style={{ objectFit: 'cover' }}
+            style={{ objectFit: 'cover', height: 60 }}
             className="rounded-lg"
           />
           <div className="flex flex-col items-start gap-[3px]">
             <div>
-              <p className="font-semibold text-xs">{item.name}</p>
+              <p className=" font-semibold text-xs">{item.name}</p>
               <p className="text-xs">₹{item.priceInr}</p>
             </div>
-            <div className="bg-sky-100 text-center px-2 py-[1px] rounded-lg">
+            <div className="bg-sky-100 text-center px-2 py-[1px] rounded-md">
               <p className="text-sky-600 text-xs">{item.brand}</p>
             </div>
           </div>
@@ -91,7 +92,7 @@ const ProductSection = ({ products, categoryName }: ProductSectionProps) => {
 };
 
 const MainContent = () => {
-  const {data, updateCategories} = useGlobalContext();
+  const { data, updateCategories } = useGlobalContext();
   const initialProducts = data[0].products;
   const initialCategories = data[0].categories;
 
@@ -123,45 +124,54 @@ const MainContent = () => {
     setNewCategory("");
   };
 
-  const onAddProduct = ()=>{
+  const onAddProduct = () => {
     setAddProductActive(!addProductActive);
   };
 
-if(addProductActive){
-  return(
-    <AddProduct  
-      setAddProductActive={setAddProductActive} 
-      addProductActive={addProductActive} 
-      products={products} 
-    />
-  );
-}
+  useEffect(() => {
+    setProducts(data[0].products);
+    setCategories(data[0].categories);
+  }, [data]);
+
+
+  if (addProductActive) {
+    return (
+      <AddProduct
+        setAddProductActive={setAddProductActive}
+        addProductActive={addProductActive}
+        products={products}
+      />
+    );
+  }
   return (
-    <div className="w-full bg-red-300 flex flex-col items-start h-screen">
+    <div className="w-full bg-white flex flex-col items-start h-screen">
       <div className="px-5 pt-3 bg-white w-full flex flex-row items-start justify-between">
         <p className="text-xl font-semibold">Products</p>
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row gap-4">
           <AlertDialog>
             <AlertDialogTrigger>
-              <DefaultButton label="Add Category" varient="secondary" size={''} />
+              <DefaultButton label="Add Category" varient="secondary" size="large" />
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Add Category</AlertDialogTitle>
                 <AlertDialogDescription>
-                  <Label htmlFor="text">Category name *</Label>
-                  <Input 
-                    onChange={(e) => setNewCategory(e.target.value)} 
-                    value={newCategory} // Controlled input
-                  />
+                  <div className="mt-5">
+                    <Label htmlFor="text" className="text-black font-extralight">Category name *</Label>
+                    <Input
+                      onChange={(e) => setNewCategory(e.target.value)}
+                      value={newCategory} // Controlled input
+                      className="text-black"
+                    />
+                  </div>
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel className="text-sky-600 bg-slate-200 hover:bg-slate-300">
                   Cancel
                 </AlertDialogCancel>
-                <AlertDialogAction 
-                  className="bg-sky-600 hover:bg-sky-700" 
+                <AlertDialogAction
+                  className="bg-sky-600 hover:bg-sky-700"
                   onClick={createCategory}
                 >
                   Save
@@ -170,11 +180,11 @@ if(addProductActive){
             </AlertDialogContent>
           </AlertDialog>
           <div onClick={onAddProduct}>
-          <DefaultButton label="Add Product" varient="primary" size={''} />
+            <DefaultButton label="Add Product" varient="primary" size={"large"} />
           </div>
         </div>
       </div>
-      <section className="flex flex-row items-start gap-2 h-full overflow-x-scroll">
+      <section className="grid grid-cols-3 items-start gap-2 h-full">
         {categories.map(({ id, name }) => (
           <ProductSection
             key={id}

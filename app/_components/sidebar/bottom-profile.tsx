@@ -16,7 +16,7 @@ const BottomProfile = () => {
             <p>Andy Samberg</p>
             <p className="text-slate-400">andy.samberg@gmail.com</p>
         </div>
-        <ChevronRight color="#1F8CD0"/>
+        <ChevronRight color="#1F8CD0" absoluteStrokeWidth={true}/>
     </div>
   )
 }

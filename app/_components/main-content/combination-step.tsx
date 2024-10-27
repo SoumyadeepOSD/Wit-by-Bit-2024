@@ -1,25 +1,11 @@
-import React, { useState } from 'react';
-import { Input } from "@/components/ui/input";
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import { CombinationPropType, comboProp } from '@/types/combinationType';
 import { Switch } from '@/components/ui/switch';
-
-interface CombinationProp {
-    name: string;
-    sku: string;
-    quantity: number;
-    inStock: boolean;
-}
+import { Input } from "@/components/ui/input";
+import React from 'react';
 
 
-interface comboProp{
-    combo: CombinationProp[]
-    setCombo:React.Dispatch<React.SetStateAction<CombinationProp[]>>;
-}
 
 const CombinationStep = ({combo, setCombo}:comboProp) => {
     // Handler to update the SKU, quantity, or inStock state
@@ -31,8 +17,22 @@ const CombinationStep = ({combo, setCombo}:comboProp) => {
         );
     };
 
+
+    const hasDuplicateSKUs = (combo:CombinationPropType[]) => {
+        const seenSKUS = new Set();
+        for(const item of combo){
+            if(seenSKUS.has(item.sku) && item.sku.trim()){
+                return true;
+            }
+            seenSKUS.add(item.sku);
+        }
+        return false
+    };
+
+
+
     return (
-        <Card className="ml-5 mt-5 max-w-fit">
+        <Card className="ml-5 mt-5 max-w-fit overflow-y-scroll overflow-x-hidden scrollbar-hide mb-10">
             <CardHeader>
                 <CardTitle>Combinations</CardTitle>
             </CardHeader>
@@ -62,13 +62,21 @@ const CombinationStep = ({combo, setCombo}:comboProp) => {
                                     type="number"
                                     value={item.inStock ? item.quantity: ""}
                                     disabled={!item.inStock}
-                                    onChange={(e) => handleInputChange(index, 'quantity', parseInt(e.target.value) || 0)}
+                                    onChange={(e) =>{ 
+                                        const val = parseInt(e.target.value);
+                                        handleInputChange(index, 'quantity', val < 0 ? 0 : val);
+                                    }}
                                 />
                             </div>
                         </div>
                     ))
                 }
+                {hasDuplicateSKUs(combo) && <p className="text-red-500 mt-2">Duplicate SKU</p>}
             </CardContent>
+            <CardFooter>
+                {combo.some(c=>c.inStock===true && c.quantity<1) ? <p className="text-red-500">Quantity can&apos;t be empty</p>:""}
+                {combo.some(c=>c.sku==="") ? <p className="text-red-500">SKU can&apos;t be empty</p>:""}
+            </CardFooter>
         </Card>
     );
 };
