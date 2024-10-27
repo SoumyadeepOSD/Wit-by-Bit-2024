@@ -50,3 +50,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ![alt text]({EEC53D65-8E97-436A-A835-84F3E54DAD3E}.png)
 
 ![alt text]({1CE1DDD1-CD7F-4E81-94DE-A3A801E95A79}.png)
+
+![alt text]({99709263-F708-4AE1-927B-7E541EC46DCA}.png)
+
+![alt text]({DB3CFFE9-3971-4839-9CA3-4FC796529FE0}.png)
+
+![alt text]({B1975C04-41D1-4DF3-9514-6CD4C36F6696}.png)
