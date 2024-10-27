@@ -123,7 +123,7 @@ const VariantStep = ({ localVariant, setLocalVariant }: VariantStepProps) => {
 
                 {/* Display a warning if any option or values array is empty */}
                 {localVariant.some(variant => variant.name.length === 0 || variant.values.length === 0) && (
-                    <p className="text-red-500 mt-2">Each option must have a name and at least one value.</p>
+                    <p className="text-red-500 mt-2">Option can&apos;t be empty</p>
                 )}
             </CardContent>
             <CardFooter>
