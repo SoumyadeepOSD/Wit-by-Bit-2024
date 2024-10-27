@@ -1,7 +1,7 @@
 import { useGlobalContext } from '@/app/Context/store';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { ImageUp } from 'lucide-react';
+import { CircleCheck, ImageUp } from 'lucide-react';
 import React from 'react';
 import {
     Select,
@@ -29,15 +29,27 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { DescriptionProps } from '@/types/descriptionType';
+import { Toaster } from '@/components/ui/toaster';
+import { useToast } from '@/hooks/use-toast';
+
 
 
 
 const DescriptionStep = ({ productName, setProductName, productCategory, setProductCategory, productBrand, setProductBrand, image, setImage, error }: DescriptionProps) => {
     const { data } = useGlobalContext();
     const categories = data[0].categories;
+    const { toast } = useToast();
+    const handleUploadImage = ()=>{
+        toast({
+            title: "Success✅",
+            description: "Image upload successfully",
+            variant:"default"
+        });
+    }
 
     return (
         <Card className="ml-5 mt-5 w-[37%] shadow-lg shadow-gray-100 border-gray-100 border-[2px]">
+            <Toaster/>
             <CardHeader>
                 <CardTitle>Description</CardTitle>
             </CardHeader>
@@ -76,6 +88,7 @@ const DescriptionStep = ({ productName, setProductName, productCategory, setProd
                 </div>
             </CardContent>
             <CardFooter className="flex flex-col items-start">
+                <section className="flex flex-row items-center gap-2">
                 <AlertDialog>
                     <AlertDialogTrigger>
                         <div className={`border-[1px] ${error.image ? "border-red-500" : "border-sky-600"}  rounded-lg flex flex-row items-center gap-2 px-4 py-3 hover:cursor-pointer hover:bg-sky-50`}>
@@ -98,12 +111,14 @@ const DescriptionStep = ({ productName, setProductName, productCategory, setProd
                             <AlertDialogCancel className="text-sky-600 bg-slate-200 hover:bg-slate-300">
                                 Cancel
                             </AlertDialogCancel>
-                            <AlertDialogAction className="bg-sky-600 hover:bg-sky-700">
+                            <AlertDialogAction className="bg-sky-600 hover:bg-sky-700" onClick={handleUploadImage}>
                                 Continue
                             </AlertDialogAction>
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialog>
+                {image&&(<CircleCheck color='green'/>)}
+                </section>
                 {(error.name || error.category || error.brand || error.image) && (<p className="text-red-500 mt-2">All Field(s) must be filled</p>)}
             </CardFooter>
         </Card>

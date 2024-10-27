@@ -20,6 +20,8 @@ import { Label } from '@/components/ui/label';
 import { sampleData } from '@/constants/sample-data';
 import AddProduct from './add-product';
 import { useGlobalContext } from '@/app/Context/store';
+import { useToast } from '@/hooks/use-toast';
+import { Toaster } from '@/components/ui/toaster';
 
 export interface ProductType {
   name: string;
@@ -92,6 +94,7 @@ const ProductSection = ({ products, categoryName }: ProductSectionProps) => {
 };
 
 const MainContent = () => {
+  const { toast } = useToast()
   const { data, updateCategories } = useGlobalContext();
   const initialProducts = data[0].products;
   const initialCategories = data[0].categories;
@@ -122,6 +125,11 @@ const MainContent = () => {
     setCategories(updatedCategories);
     updateCategories(updatedCategories);
     setNewCategory("");
+    toast({
+      title: "Success✅",
+      description: "Category created successfully",
+      variant: "default"
+    });
   };
 
   const onAddProduct = () => {
@@ -145,7 +153,8 @@ const MainContent = () => {
   }
   return (
     <div className="w-full bg-white flex flex-col items-start h-screen">
-      <div className="px-5 pt-3 bg-white w-full flex flex-row items-start justify-between">
+     <Toaster/>
+     <div className="px-5 pt-3 bg-white w-full flex flex-row items-start justify-between">
         <p className="text-xl font-semibold">Products</p>
         <div className="flex flex-row gap-4">
           <AlertDialog>

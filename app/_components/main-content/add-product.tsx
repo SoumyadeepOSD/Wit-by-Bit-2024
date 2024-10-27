@@ -16,6 +16,8 @@ import { ChevronRight } from 'lucide-react';
 import VariantStep from './variants-step';
 import PriceStep from './price-step';
 import { errorType } from '@/types/descriptionType';
+import { useToast } from '@/hooks/use-toast';
+import { Toaster } from '@/components/ui/toaster';
 
 interface addProductType {
     setAddProductActive: (active: boolean) => void;
@@ -33,7 +35,7 @@ const generatePermutations = (arrays: any[]) => {
 
 
 const AddProduct = ({ setAddProductActive, addProductActive }: addProductType) => {
-    
+    const {toast} = useToast();
     const onCancel = () => {
         if (addProductActive) {
             setAddProductActive(!addProductActive);
@@ -133,6 +135,11 @@ const AddProduct = ({ setAddProductActive, addProductActive }: addProductType) =
         updateDiscount(products.length - 1, discountData);
         setActiveSteps([breadCrumSteps[0].stepName]); // Reset activeSteps here
         onCancel();
+        toast({
+            title: "Success✅",
+            description: "Product created successfully",
+            variant:"default"
+        });
     };
     
     
@@ -217,6 +224,7 @@ const AddProduct = ({ setAddProductActive, addProductActive }: addProductType) =
 
     return (
         <div className="w-full flex flex-col items-start h-screen">
+            <Toaster/>
             <div className="px-5 pt-5 bg-white w-full flex flex-row items-start justify-between">
                 <p className="text-xl font-semibold">Add Product</p>
                 <div className="flex flex-row gap-2">
